@@ -94,7 +94,19 @@ get_maximum_variation_station_test() ->
     Station = pollution:get_maximum_variation_station("PM10", M8),
     ?assertEqual({"Station",{15.0,16.5},754.6666666666666}, Station).
 
-get_station_variation_test() -> ok.
+get_station_variation_test() -> 
+    M1 = pollution:create_monitor(),
+    M2 = pollution:add_station("Station", {15.0000, 16.5000}, M1),
+    M3 = pollution:add_value("Station", {{2021,4,25},{13,51,50}}, "PM10", 50, M2),
+    M4 = pollution:add_value({15.0000, 16.5000}, {{2021,4,25},{14,00,00}}, "PM2.5", 52, M3),
+    M5 = pollution:add_value({15.0000, 16.5000}, {{2021,4,25},{15,00,00}}, "PM10", 36, M4),
+    M6 = pollution:add_value("Station", {{2021,4,24},{13,51,50}}, "PM10", 100, M5),
+    M7 = pollution:add_station("Station 2", {14.0, 12.0}, M6),
+    M8 = pollution:add_value("Station 2", {{2021,4,25},{14,0,0}}, "PM10", 5, M7),
+    Variation1 = pollution:get_station_variation("Station", "PM10", M8),
+    Variation2 = pollution:get_station_variation("Station 2", "PM10", M8),
+    ?assertEqual(754.6666666666666, Variation1),
+    ?assertEqual(0.0, Variation2).
 
 get_stats_test() -> 
     M1 = pollution:create_monitor(),
