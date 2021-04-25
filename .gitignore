@@ -1,0 +1,6 @@
+*.beam
+.idea
+.vscode
+*.iml
+*.sh
+*.zip
