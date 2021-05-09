@@ -1,3 +1,6 @@
+%% This module was necessary before creating rebar3 app
+%% At the moment pollution_sup.erl takes its responsibility
+
 -module(pollution_supervisor).
 -behaviour(supervisor).
 -define(SUPERVISOR, pollution_supervisor).
