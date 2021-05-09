@@ -12,7 +12,7 @@ process(Alias, Args) ->
   server ! {Alias, Args},
   receive
     {error, Msg} -> {error, Msg};
-    _ -> ok
+    Response -> Response
   end.
 
 add_station(Station, Coordinates) ->
@@ -47,10 +47,9 @@ init() ->
   run(Monitor).
 
 handle_error(Monitor, NewMonitor, Pid) ->
-  Pid ! NewMonitor,
   case NewMonitor of
-    {error, _} -> run(Monitor);
-    _ -> run(NewMonitor)
+    {error, Msg} -> Pid ! {error, Msg}, run(Monitor);
+    _ -> Pid ! ok, run(NewMonitor)
   end.
 
 run(Monitor) ->
@@ -64,7 +63,7 @@ run(Monitor) ->
       handle_error(Monitor, NewMonitor, Pid);
     {remove_value, {Id, Time, Type, Pid}} ->
       NewMonitor = pollution:remove_value(Id, Time, Type, Monitor),
-      Pid ! NewMonitor,
+      Pid ! ok,
       run(NewMonitor);
     {get_one_value, {Id, Time, Type, Pid}} ->
       Pid ! pollution:get_one_value(Id, Time, Type, Monitor),

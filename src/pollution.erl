@@ -70,7 +70,7 @@ get_maximum_variation_station(Type, Monitor) ->
       true -> Measurement;
       _ -> CurrentMax
     end end,
-  lists:foldl(Max, {null, null, 0}, StationsWithVariations).
+  lists:foldl(Max, {null, null, -1}, StationsWithVariations).
 
 %% Returns the variation of values of the given Type of the station with the given Id
 get_station_variation(Id, Type, Monitor) ->
