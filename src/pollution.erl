@@ -3,7 +3,8 @@
 -export([create_monitor/0, add_station/3, add_value/5, remove_value/4, get_one_value/4, get_station_mean/3, get_daily_mean/3,
   get_maximum_variation_station/2, get_station_variation/3, get_stats/1, get_key/2]).
 
--record(measurement, {time, type, value}).
+%% A following header includes amongst others a measurement record definition
+-include("../include/pollution.hrl").
 
 %% Monitor data structure:
 %% It is a map that stores two types of key-value pairs. One of them is K: Station, V: Coordinates

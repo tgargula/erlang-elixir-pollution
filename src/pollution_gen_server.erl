@@ -1,7 +1,7 @@
 -module(pollution_gen_server).
 -author("tgargula").
 -behaviour(gen_server).
--export([start_link/0, start/0, stop/0, crash/0, add_station/2, add_value/4, remove_value/3, get_one_value/3]).
+-export([start_link/0, start/0, stop/0, crash/0, get/0, add_station/2, add_value/4, remove_value/3, get_one_value/3]).
 -export([get_station_mean/2, get_daily_mean/2, get_maximum_variation_station/1, get_station_variation/2, get_stats/0]).
 -export([init/1, handle_call/3, handle_cast/2, terminate/2]).
 
@@ -20,6 +20,7 @@ init(_) ->
 start() -> gen_server:call(?MODULE, start).
 stop() -> gen_server:call(?MODULE, terminate).
 crash() -> gen_server:cast(?MODULE, crash).
+get() -> gen_server:call(?MODULE, get).
 add_station(Station, Coordinates) -> gen_server:call(?MODULE, {add_station, Station, Coordinates}).
 add_value(Id, Time, Type, Value) -> gen_server:call(?MODULE, {add_value, Id, Time, Type, Value}).
 remove_value(Id, Time, Type) -> gen_server:call(?MODULE, {remove_value, Id, Time, Type}).
@@ -33,6 +34,8 @@ get_stats() -> gen_server:call(?MODULE, {get_stats}).
 
 %% HANDLERS %%
 handle_cast(crash, State) -> no:exist(), {noreply, State}.
+
+handle_call(get, _From, State) -> {reply, State, State};
 
 handle_call(start, _From, State) -> {noreply, State};
 
