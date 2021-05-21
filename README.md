@@ -1,9 +1,11 @@
-pollution
-=====
+# Pollution module
 
-An OTP application
 
-Build
------
+This is a project for the subject: Programming in Erlang and Elixir.
+It implements basic functionalities that could be used for gathering pollution data.
 
-    $ rebar3 compile
+
+## Build
+```shell
+rebar3 compile
+```
