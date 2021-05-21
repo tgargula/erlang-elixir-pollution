@@ -4,6 +4,7 @@
 .eunit
 .rebar3
 .rebar
+.fetch
 
 _*
 logs
@@ -11,6 +12,10 @@ ebin
 log
 rebar3.crashdump
 _build
+cover
+deps
+doc
+out
 
 *.beam
 *.dump
@@ -21,5 +26,6 @@ _build
 *.plt
 *.swp
 *.swo
+*.ez
 
 *~

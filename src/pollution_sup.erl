@@ -44,7 +44,6 @@ init([]) ->
       type => worker,
       modules => [pollution_value_collector_gen_statem]
     }
-
   ],
   {ok, {SupFlags, ChildSpecs}}.
 
