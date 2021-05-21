@@ -7,5 +7,10 @@ It implements basic functionalities that could be used for gathering pollution d
 
 ## Build
 ```shell
-rebar3 compile
+mix clean && mix compile
+```
+
+## Run
+```shell
+iex -S mix
 ```
