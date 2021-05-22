@@ -4,24 +4,21 @@ defmodule PollutionData do
     date
     |> String.split("-")
     |> Enum.reverse
-    |> Stream.map(&(elem(Integer.parse(&1), 0)))
-    |> Enum.to_list
+    |> Enum.map(&(elem(Integer.parse(&1), 0)))
     |> :erlang.list_to_tuple
   end
 
   def convert_time(time) do
     time
     |> String.split(":")
-    |> Stream.map(&(elem(Integer.parse(&1), 0)))
-    |> Enum.to_list
+    |> Enum.map(&(elem(Integer.parse(&1), 0)))
     |> :lists.append([0])
     |> :erlang.list_to_tuple
   end
 
   def convert_location(loc_x, loc_y) do
     [loc_x, loc_y]
-    |> Stream.map(&(elem(Float.parse(&1), 0)))
-    |> Enum.to_list
+    |> Enum.map(&(elem(Float.parse(&1), 0)))
     |> :erlang.list_to_tuple
   end
 
