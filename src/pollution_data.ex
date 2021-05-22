@@ -4,21 +4,24 @@ defmodule PollutionData do
     date
     |> String.split("-")
     |> Enum.reverse
-    |> Enum.map(&(elem(Integer.parse(&1), 0)))
+    |> Stream.map(&(elem(Integer.parse(&1), 0)))
+    |> Enum.to_list
     |> :erlang.list_to_tuple
   end
 
   def convert_time(time) do
     time
     |> String.split(":")
-    |> Enum.map(&(elem(Integer.parse(&1), 0)))
+    |> Stream.map(&(elem(Integer.parse(&1), 0)))
+    |> Enum.to_list
     |> :lists.append([0])
     |> :erlang.list_to_tuple
   end
 
   def convert_location(loc_x, loc_y) do
     [loc_x, loc_y]
-    |> Enum.map(&(elem(Float.parse(&1), 0)))
+    |> Stream.map(&(elem(Float.parse(&1), 0)))
+    |> Enum.to_list
     |> :erlang.list_to_tuple
   end
 
@@ -36,7 +39,8 @@ defmodule PollutionData do
 
   def convert_lines(lines) do
     lines
-    |> Enum.map(&(convert_line(&1)))
+    |> Stream.map(&(convert_line(&1)))
+    |> Enum.to_list
   end
 
   def import_lines_from_csv(file) do
@@ -48,19 +52,20 @@ defmodule PollutionData do
 
   def identify_stations(data) do
     data
-    |> Enum.map(fn (%{location: loc}) -> loc end)
-    |> Enum.uniq
+    |> Stream.map(fn (%{location: loc}) -> loc end)
+    |> Stream.uniq
+    |> Enum.to_list
   end
 
   def add_stations(data) do
     data
     |> identify_stations
-    |> Enum.map(
+    |> Stream.map(
          fn ({locx, locy}) ->
            {"station_#{locx}_#{locy}", {locx, locy}}
          end
        )
-    |> Enum.each(
+    |> Stream.each(
          fn ({station, location}) ->
            :pollution_gen_server.add_station(station, location)
          end
@@ -69,7 +74,7 @@ defmodule PollutionData do
 
   def add_measurements(data) do
     data
-    |> Enum.each(
+    |> Stream.each(
          fn (%{location: id, datetime: datetime, pollutionLevel: value}) ->
            :pollution_gen_server.add_value(id, datetime, "PM10", value)
          end
