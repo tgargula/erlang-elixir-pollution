@@ -62,7 +62,7 @@ defmodule PollutionData do
        )
     |> Enum.each(
          fn ({station, location}) ->
-           :pollution_gen_server.add_station(station, location)
+           :pollution_database_gen_server.add_station(station, location)
          end
        )
   end
@@ -71,7 +71,7 @@ defmodule PollutionData do
     data
     |> Enum.each(
          fn (%{location: id, datetime: datetime, pollutionLevel: value}) ->
-           :pollution_gen_server.add_value(id, datetime, "PM10", value)
+           :pollution_database_gen_server.add_value(id, datetime, "PM10", value)
          end
        )
   end

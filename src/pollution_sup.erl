@@ -43,6 +43,14 @@ init([]) ->
       shutdown => brutal_kill,
       type => worker,
       modules => [pollution_value_collector_gen_statem]
+    },
+    #{
+      id => pollution_database_gen_server,
+      start => {pollution_database_gen_server, start_link, []},
+      restart => permanent,
+      shutdown => brutal_kill,
+      type => worker,
+      modules => [pollution_database_gen_server]
     }
   ],
   {ok, {SupFlags, ChildSpecs}}.
