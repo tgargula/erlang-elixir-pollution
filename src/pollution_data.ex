@@ -39,14 +39,14 @@ defmodule PollutionData do
 
   def convert_lines(lines) do
     lines
-    |> Stream.map(&(convert_line(&1)))
-    |> Enum.to_list
+    |> Stream.map(&convert_line/1)
   end
 
   def import_lines_from_csv(file) do
     file
-    |> File.read!
-    |> String.split("\r\n")
+    |> File.stream!
+    |> Stream.flat_map(&(String.split(&1, "\n")))
+    |> Stream.filter(&(&1 != ""))
     |> convert_lines
   end
 
@@ -54,7 +54,6 @@ defmodule PollutionData do
     data
     |> Stream.map(fn (%{location: loc}) -> loc end)
     |> Stream.uniq
-    |> Enum.to_list
   end
 
   def add_stations(data) do
@@ -70,6 +69,7 @@ defmodule PollutionData do
            :pollution_gen_server.add_station(station, location)
          end
        )
+    |> Enum.reduce(:ok, fn (_x, acc) -> acc end)
   end
 
   def add_measurements(data) do
@@ -79,6 +79,7 @@ defmodule PollutionData do
            :pollution_gen_server.add_value(id, datetime, "PM10", value)
          end
        )
+    |> Enum.reduce(:ok, fn (_x, acc) -> acc end)
   end
 
 end
